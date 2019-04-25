@@ -1,0 +1,49 @@
+{
+  "dataset_reader": {
+    "type": "sst_tokens",
+    "token_indexers": {
+      "tokens": {
+        "type": "bert-pretrained",
+        "pretrained_model": "bert-base-uncased"
+      }
+    }
+  },
+  "train_data_path": "data/trees/train.txt",
+  "validation_data_path": "data/trees/dev.txt",
+  "vocabulary": {
+        "min_count": {
+            "tokens": 3
+        }
+  },
+  "model": {
+    "type": "lstm_classifier",
+
+    "word_embeddings": {
+      "tokens": {
+        "type": "bert-pretrained",
+        "pretrained_model": "bert-base-uncased"
+      },
+      "allow_unmatched_keys": true
+    },
+
+    "encoder": {
+      "type": "lstm",
+      "input_size": 768,
+      "hidden_size": 128,
+      "batch_first": "True"
+    }
+  },
+  "iterator": {
+    "type": "bucket",
+    "batch_size": 32,
+    "sorting_keys": [["tokens", "num_tokens"]]
+  },
+  "trainer": {
+    "optimizer": {
+            "type": "adam"
+    },
+    "num_epochs": 20,
+    "patience": 5
+ 
+  }
+}
